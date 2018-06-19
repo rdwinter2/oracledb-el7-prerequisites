@@ -16,13 +16,21 @@ oracle_user: oracle
 grid_user: grid
 oracle_inventory_group: oinstall
 
+
+snofile: 4096
+hnofile: 65536
+snproc: 16384
+hnproc: 16384
+sstack: 10240
+hstack: 32768
+
 oracle_seclimits:
-  - { name: 'soft nproc', value: 16384 }
-  - { name: 'hard nproc', value: 16384 }
-  - { name: 'soft nofile', value: 4096 }
-  - { name: 'hard nofile', value: 65536 }
-  - { name: 'soft stack', value: 10240 }
-  - { name: 'hard stack', value: 32768 }
+  - { name: 'soft nproc', value: "{{ snproc }}" }
+  - { name: 'hard nproc', value: "{{ hnproc }}" }
+  - { name: 'soft nofile', value: "{{ snofile }}" }
+  - { name: 'hard nofile', value: "{{ hnofile }}" }
+  - { name: 'soft stack', value: "{{ sstack }}" }
+  - { name: 'hard stack', value: "{{ hstack }}" }
   - { name: 'soft memlock', value: "{{ ((0.9 * ansible_memtotal_mb)*1024)|round|int }}" }
   - { name: 'hard memlock', value: "{{ ((0.9 * ansible_memtotal_mb)*1024)|round|int }}" }
 
@@ -116,7 +124,7 @@ backupdba_gid: 54327
 dgdba_gid: 54328
 kmdba_gid: 54329
 racdba_gid: 54330
-  
+
 oracle_groups:
   - { group: "{{ oracle_inventory_group }}", gid: "{{ oracle_inventory_group_gid }}", comment: "The Oracle Inventory Group" }
   - { group: dba, gid: "{{ dba_gid }}", comment: "The OSDBA group" }
@@ -140,7 +148,7 @@ grid_users:
 transparent_hugepage_disable:
   - {disable: "echo never >", path: /sys/kernel/mm/transparent_hugepage/enabled, rclocal: /etc/rc.d/rc.local}
   - {disable: "echo never >", path: /sys/kernel/mm/transparent_hugepage/defrag, rclocal: /etc/rc.d/rc.local}
-             
+
 configure_hugepages: true
 configure_hugepages_by: percentage          # percentage/memory
 percent_hugepages: 50                       # Percentage (0-100) of total RAM to dedicate to hugepages, Configures vm.nr_hugepages
