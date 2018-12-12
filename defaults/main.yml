@@ -16,7 +16,6 @@ oracle_user: oracle
 grid_user: grid
 oracle_inventory_group: oinstall
 
-
 snofile: 4096
 hnofile: 65536
 snproc: 16384
